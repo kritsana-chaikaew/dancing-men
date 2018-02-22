@@ -3,14 +3,19 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
+import { CipherComponent } from './cipher/cipher.component';
+
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CipherComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
