@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Cipher } from '../cipher';
+import { Character } from '../character';
+import { CHARACTERS } from '../cipher';
 
 @Component({
   selector: 'app-cipher',
@@ -7,13 +8,16 @@ import { Cipher } from '../cipher';
   styleUrls: ['./cipher.component.css']
 })
 export class CipherComponent implements OnInit {
-  cipher: Cipher = {
-    content: 'this is example of cipher content'
-  };
+
+  characters = CHARACTERS;
+  selectedCharacter: Character;
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  onSelect(character: Character): void {
+    this.selectedCharacter = character;
+  }
 }
