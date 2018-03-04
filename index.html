@@ -12,10 +12,11 @@
     <title>Dancing Men</title>
   </head>
   <body>
-    <div class="container p-0" style="width: 500px">
-      <textarea class="form-control" style="width: 500px; text-transform: uppercase;" id="exampleTextarea"></textarea>
+    <div class="container p-0 h-100" style="width: 500px">
+      <textarea class="form-control" style="height: 200px; text-transform: uppercase;" id="cipher"></textarea>
+      <div class="form-control" style="width: 500px; height: 200px; word-wrap: break-word;" id="plaintext"></div>
     </div>
-    <div class="container char p-0" style="width: 500px"></div>
+    <div class="container p-0" style="width: 500px" id="char"></div>
     </div>
   </body>
 </html>
@@ -23,12 +24,25 @@
 <script>
 var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var mapping = {};
+var original = '';
 for (var i=0; i<chars.length; i++) {
   mapping[chars[i]] = chars[i];
 }
 
+function subtitute(cip) {
+  var plain = '';
+  for (var i=0; i<cip.length; i++) {
+    plain = plain + mapping[cip[i]];
+  }
+  return plain;
+}
+
+function display() {
+  $('#plaintext').text(subtitute(original));
+}
+
 function render() {
-  $(".char").each(function () {
+  $("#char").each(function () {
     $(this).html('');
     for (var i=0; i<6; i++) {
       $(this).append(
@@ -37,6 +51,7 @@ function render() {
       );
     }
   });
+
 
   $(".row").each(function () {
     $(this).html('');
@@ -74,9 +89,16 @@ function render() {
     var id = col.attr('id');
     var key = chars[id-1]
     mapping[key] = val;
-    console.log(chars[id-1], val, mapping[chars[id-1]]);
+
+    display();
     render();
-    console.log('render');
+  });
+
+  $('#cipher').bind('input propertychange', function () {
+    var cipher = $(this).val();
+    cipher = String(cipher).toUpperCase()
+    original = cipher;
+    display();
   });
 }
 render();
