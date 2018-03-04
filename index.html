@@ -38,7 +38,7 @@ function subtitute(cip) {
   var plain = '';
   for (var i=0; i<cip.length; i++) {
     if (cip[i] == ' ') {
-      plain = plain + ' ';
+      plain = plain + '&nbsp;';
     } else if (cip[i] != mapping[cip[i]]){
       plain = plain + '<b>' + mapping[cip[i]] + '</b>';
     } else {
@@ -105,7 +105,7 @@ function render() {
   });
 
   $('#cipher').bind('input propertychange', function () {
-    $(this).val( $(this).val().replace(/[^a-zA-Z][ ]/gi, ""));
+    $(this).val( $(this).val().replace(/[^a-zA-Z ]/gi, ""));
     var cipher = $(this).val();
     cipher = String(cipher).toUpperCase()
     original = cipher;
