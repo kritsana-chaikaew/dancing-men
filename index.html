@@ -27,45 +27,59 @@ for (var i=0; i<chars.length; i++) {
   mapping[chars[i]] = chars[i];
 }
 
-$(".char").each(function () {
-  $(this).html('');
-  for (var i=0; i<6; i++) {
-    $(this).append(
-      '<div class="row w-100 m-0" id="'+i+'"></div>\
-      <div></div>'
-    );
-  }
-});
-
-$(".row").each(function () {
-  $(this).html('');
-  var id = Number($(this).attr('id'));
-  for (var i=1; i<6; i++) {
-    var col_id = (id * 5) + i;
-    $(this).append('<div class="col p-0" id="'+col_id+'"></div>');
-    if (id == 5) {
-      break;
+function render() {
+  $(".char").each(function () {
+    $(this).html('');
+    for (var i=0; i<6; i++) {
+      $(this).append(
+        '<div class="row w-100 m-0" id="'+i+'"></div>\
+        <div></div>'
+      );
     }
-  }
-});
+  });
 
-$(".col").each(function () {
-  var index = Number($(this).attr('id'));
-  var char = chars[index-1];
-  var map = mapping[char];
-  $(this).html(
-    '<div class="btn-group w-100 pb-1 pr-1">\
-      <button class="btn btn-primary w-50" disabled>'+char+'</button>\
+  $(".row").each(function () {
+    $(this).html('');
+    var id = Number($(this).attr('id'));
+    for (var i=1; i<6; i++) {
+      var col_id = (id * 5) + i;
+      $(this).append('<div class="col p-0" id="'+col_id+'"></div>');
+      if (id == 5) {
+        break;
+      }
+    }
+  });
+
+  $(".col").each(function () {
+    var index = Number($(this).attr('id'));
+    var key = chars[index-1];
+    var map = mapping[key];
+    $(this).html(
+      '<div class="btn-group w-100 pb-1 pr-1">\
+      <button class="btn btn-primary w-50" disabled>'+key+'</button>\
       <button class="btn btn-primary dropdown-toggle w-50" type="button" data-toggle="dropdown">'+map+'</button>\
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">\
       </div>\
-    </div>'
-  );
-});
+      </div>'
+    );
+  });
 
-$.each(mapping, function(key, value) {
-     $('.dropdown-menu').append('<a class="dropdown-item" href="#">'+key+'</a>');
-});
+  $.each(mapping, function(key, value) {
+    $('.dropdown-menu').append('<a class="dropdown-item" href="#" value="'+key+'">'+key+'</a>');
+  });
+
+  $('.dropdown-item').click(function () {
+    var val = $(this).attr('value');
+    var col = $(this).parent().parent().parent();
+    var id = col.attr('id');
+    var key = chars[id-1]
+    mapping[key] = val;
+    console.log(chars[id-1], val, mapping[chars[id-1]]);
+    render();
+    console.log('render');
+  });
+}
+render();
 </script>
 
 <style>
