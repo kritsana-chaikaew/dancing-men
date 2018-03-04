@@ -14,7 +14,7 @@
   <body>
     <div class="container p-0 h-100" style="width: 500px">
       <textarea class="form-control" style="height: 200px; text-transform: uppercase;" id="cipher"></textarea>
-      <div class="form-control" style="width: 500px; height: 200px; word-wrap: break-word;" id="plaintext"></div>
+      <div class="form-control" style="width: 500px; height: 200px; word-wrap: break-word; overflow-y:scroll;" id="plaintext"></div>
     </div>
     <div class="container p-0" style="width: 500px" id="char"></div>
     </div>
@@ -25,23 +25,35 @@
 var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var mapping = {};
 var original = '';
-for (var i=0; i<chars.length; i++) {
-  mapping[chars[i]] = chars[i];
+
+function reset () {
+  for (var i=0; i<chars.length; i++) {
+    mapping[chars[i]] = chars[i];
+  }
+  render();
 }
+reset();
 
 function subtitute(cip) {
   var plain = '';
   for (var i=0; i<cip.length; i++) {
-    plain = plain + mapping[cip[i]];
+    if (cip[i] == ' ') {
+      plain = plain + ' ';
+    } else if (cip[i] != mapping[cip[i]]){
+      plain = plain + '<b>' + mapping[cip[i]] + '</b>';
+    } else {
+      plain = plain + mapping[cip[i]];
+    }
   }
   return plain;
 }
 
 function display() {
-  $('#plaintext').text(subtitute(original));
+  $('#plaintext').html(subtitute(original));
 }
 
 function render() {
+  display();
   $("#char").each(function () {
     $(this).html('');
     for (var i=0; i<6; i++) {
@@ -52,7 +64,6 @@ function render() {
     }
   });
 
-
   $(".row").each(function () {
     $(this).html('');
     var id = Number($(this).attr('id'));
@@ -60,6 +71,7 @@ function render() {
       var col_id = (id * 5) + i;
       $(this).append('<div class="col p-0" id="'+col_id+'"></div>');
       if (id == 5) {
+        $(this).append('<button class="btn btn-danger w-50" id="reset">reset</button>');
         break;
       }
     }
@@ -89,19 +101,21 @@ function render() {
     var id = col.attr('id');
     var key = chars[id-1]
     mapping[key] = val;
-
-    display();
     render();
   });
 
   $('#cipher').bind('input propertychange', function () {
+    $(this).val( $(this).val().replace(/[^a-zA-Z][ ]/gi, ""));
     var cipher = $(this).val();
     cipher = String(cipher).toUpperCase()
     original = cipher;
     display();
   });
+
+  $('#reset').click(function () {
+    reset();
+  });
 }
-render();
 </script>
 
 <style>
