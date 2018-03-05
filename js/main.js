@@ -37,7 +37,6 @@ function display() {
 function rotate (val) {
   for (var i=0; i<chars.length; i++) {
     mapping[chars[i]] = chars[(i+Number(val))%26];
-    console.log(chars[i], mapping[chars[i]])
   }
 }
 
