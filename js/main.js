@@ -1,6 +1,7 @@
 var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var mapping = {};
 var original = '';
+var step_val = 0;
 
 function resetChar() {
   for (var i=0; i<chars.length; i++) {
@@ -31,6 +32,13 @@ function subtitute(cip) {
 
 function display() {
   $('#plaintext').html(subtitute(original));
+}
+
+function rotate (val) {
+  for (var i=0; i<chars.length; i++) {
+    mapping[chars[i]] = chars[(i+Number(val))%26];
+    console.log(chars[i], mapping[chars[i]])
+  }
 }
 
 function render() {
@@ -94,11 +102,18 @@ function render() {
   });
 
   $('#reset').click(function () {
+    resetChar();
+    resetStep();
   });
 
   $('#slider').on('input', function () {
-    var val = $(this).val();
-    $('#step').html(val);
+    var val = $(this).val();step_val
+    if (step_val != val) {
+      step_val = val;
+      $('#step').html(step_val);
+      rotate(step_val);
+      render();
+    }
   });
 }
 
